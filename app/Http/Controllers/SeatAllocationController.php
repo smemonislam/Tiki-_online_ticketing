@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use App\Models\SeatAllocation;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSeatAllocationRequest;
-use App\Http\Requests\UpdateSeatAllocationRequest;
 
 class SeatAllocationController extends Controller
 {
@@ -59,8 +58,17 @@ class SeatAllocationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSeatAllocationRequest $request)
+    public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users|max:255',
+            'phone' => 'required|string|unique:users|max:255',
+            'trip_id' => 'required|numeric',
+            'bus_id' => 'required|numeric',
+            'seat_number' => 'required|string|max:255',
+        ]);
+
         $data_user = [
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -100,7 +108,7 @@ class SeatAllocationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSeatAllocationRequest $request, SeatAllocation $seatAllocation)
+    public function update(Request $request, SeatAllocation $seatAllocation)
     {
         //
     }
